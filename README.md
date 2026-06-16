@@ -131,5 +131,5 @@ mvn spring-boot:run
 ## Future Enhancements
 
 * JWT-based authentication
-* Smart meter integration
+* Front-End implementation
 
