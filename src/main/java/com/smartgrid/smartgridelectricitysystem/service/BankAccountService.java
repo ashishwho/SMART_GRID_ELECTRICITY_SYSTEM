@@ -1,12 +1,11 @@
 package com.smartgrid.smartgridelectricitysystem.service;
 
-import com.smartgrid.smartgridelectricitysystem.exception.InsufficientBalanceException;
-import com.smartgrid.smartgridelectricitysystem.exception.InvalidCredentialsException;
-import com.smartgrid.smartgridelectricitysystem.exception.ResourceNotFoundException;
-import com.smartgrid.smartgridelectricitysystem.exception.ValidationException;
+import com.smartgrid.smartgridelectricitysystem.exception.*;
 import com.smartgrid.smartgridelectricitysystem.model.*;
 import com.smartgrid.smartgridelectricitysystem.repository.BankAccountRepository;
 import com.smartgrid.smartgridelectricitysystem.repository.CustomerRepository;
+import com.smartgrid.smartgridelectricitysystem.repository.UtilityAccountRepository;
+import com.smartgrid.smartgridelectricitysystem.repository.WalletRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,15 +16,68 @@ public class BankAccountService {
     private final CustomerRepository customerRepository;
     private final WalletService walletService;
     private final SessionService sessionService;
+    private final UtilityAccountRepository utilityAccountRepository;
+
 
     public BankAccountService(BankAccountRepository bankAccountRepository,
                               CustomerRepository customerRepository,
                               WalletService walletService,
-                              SessionService sessionService) {
+                              SessionService sessionService,
+                              UtilityAccountRepository utilityAccountRepository) {
         this.bankAccountRepository = bankAccountRepository;
         this.customerRepository = customerRepository;
         this.walletService = walletService;
         this.sessionService = sessionService;
+        this.utilityAccountRepository = utilityAccountRepository;
+    }
+
+    @Transactional
+    public UtilityAccount addUtilityAccount(
+            String bankAccNo,
+            String utilityName) {
+
+        sessionService.requireEmployee();
+
+        BankAccount bankAccount =
+                bankAccountRepository
+                        .findById(bankAccNo)
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Bank account not found"));
+
+        if (utilityAccountRepository
+                .existsById(bankAccNo)) {
+
+            throw new DuplicateResourceException(
+                    "Utility account already exists");
+        }
+
+        UtilityAccount utility =
+                new UtilityAccount(
+                        bankAccNo,
+                        utilityName);
+
+        return utilityAccountRepository
+                .save(utility);
+    }
+
+    public BankAccount getUtilityBankAccount() {
+
+        UtilityAccount utility =
+                utilityAccountRepository
+                        .findAll()
+                        .stream()
+                        .findFirst()
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "No utility bank account found, error from system side"));
+
+        return bankAccountRepository
+                .findById(
+                        utility.getBankAccNo())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "No utility bank account found, error from system side"));
     }
 
 
@@ -80,15 +132,11 @@ public class BankAccountService {
 
         // 7. Get utility account and check balance
         BankAccount utility =
-                bankAccountRepository
-                        .findByType(AccountType.UTILITY)
-                        .orElseThrow(() ->
-                                new ResourceNotFoundException(
-                                        "Utility account not found"));
+                getUtilityBankAccount();
 
         if (utility.getBalance() < amount) {
             throw new InsufficientBalanceException(
-                    "Utility account has insufficient funds for conversion");
+                    "Utility account has insufficient funds for conversion, error from system side");
         }
 
         // 8. Perform transfer

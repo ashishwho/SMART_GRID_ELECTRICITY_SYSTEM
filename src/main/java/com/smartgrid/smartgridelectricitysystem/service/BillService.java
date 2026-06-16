@@ -23,19 +23,22 @@ public class BillService {
     private final BankAccountRepository bankAccountRepository;
     private final WalletRepository walletRepository;
     private final SessionService sessionService;
+    private final BankAccountService bankAccountService;
 
     public BillService(BillRepository billRepository,
                        CustomerRepository customerRepository,
                        WalletService walletService,
                        BankAccountRepository bankAccountRepository,
                        WalletRepository walletRepository,
-                       SessionService sessionService) {
+                       SessionService sessionService,
+                       BankAccountService bankAccountService) {
         this.billRepository = billRepository;
         this.customerRepository = customerRepository;
         this.walletService = walletService;
         this.bankAccountRepository = bankAccountRepository;
         this.walletRepository = walletRepository;
         this.sessionService=sessionService;
+        this.bankAccountService=bankAccountService;
     }
     @Transactional
     public Bill createBill(
@@ -132,13 +135,9 @@ public class BillService {
                         new ResourceNotFoundException(
                                 "No such pending bill found"));
 
-        if (!bill.getCustomer()
-                .getMeterNo()
-                .equals(meterNo)) {
-
+        if (!bill.getCustomer().getMeterNo().equals(meterNo)) {
             throw new ValidationException(
-                    "This bill does not belong to customer "
-                            + meterNo);
+                    "You can only pay your own bills");
         }
 
         double totalAmount =
@@ -169,47 +168,52 @@ public class BillService {
         Customer customer =
                 bill.getCustomer();
 
-        BankAccount customerBank =
-                bankAccountRepository
-                        .findById(
-                                customer.getLinkedBankAccNo())
-                        .orElseThrow(() ->
-                                new ResourceNotFoundException(
-                                        "Customer bank account not found"));
 
-        if (!customerBank.getPassword()
-                .equals(bankPassword)) {
 
-            throw new InvalidCredentialsException(
-                    "Invalid bank account password");
-        }
+        if(bankAmount > 0) {
 
-        if (customerBank.getBalance()
-                < bankAmount) {
+            BankAccount utility =
+                    bankAccountService
+                            .getUtilityBankAccount();
 
-            throw new InsufficientBalanceException(
-                    "Insufficient bank balance");
-        }
+            BankAccount customerBank =
+                    bankAccountRepository
+                            .findById(
+                                    customer.getLinkedBankAccNo())
+                            .orElseThrow(() ->
+                                    new ResourceNotFoundException(
+                                            "Customer bank account not found"));
 
-        BankAccount utility =
-                bankAccountRepository
-                        .findByType(AccountType.UTILITY)
-                        .orElseThrow(() ->
-                                new ResourceNotFoundException(
-                                        "Utility account not found"));
+            if (!customerBank.getPassword()
+                    .equals(bankPassword)) {
 
-        if (walletAmount > 0) {
-            wallet.debit(walletAmount);
-            walletRepository.save(wallet);
-        }
+                throw new InvalidCredentialsException(
+                        "Invalid bank account password");
+            }
 
-        if (bankAmount > 0) {
+
+            if (customerBank.getBalance()
+                    < bankAmount) {
+
+                throw new InsufficientBalanceException(
+                        "Insufficient bank balance");
+            }
+
             customerBank.debit(bankAmount);
             bankAccountRepository.save(customerBank);
 
             utility.credit(bankAmount);
             bankAccountRepository.save(utility);
         }
+
+
+
+        if (walletAmount > 0) {
+            wallet.debit(walletAmount);
+            walletRepository.save(wallet);
+        }
+
+
 
         bill.setStatus(BillStatus.PAID);
         bill.setPaidFromWallet(walletAmount);

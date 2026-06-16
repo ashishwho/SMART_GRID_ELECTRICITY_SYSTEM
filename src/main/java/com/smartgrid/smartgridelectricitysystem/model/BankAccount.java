@@ -19,18 +19,13 @@ public class BankAccount {
     @Column(nullable = false)
     private double balance;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private AccountType type;
-
     public BankAccount() {}
 
-    public BankAccount(String accNo, String accountHolderName, String password, double balance, AccountType type) {
+    public BankAccount(String accNo, String accountHolderName, String password, double balance) {
         this.accNo = accNo;
         this.accountHolderName = accountHolderName;
         this.password = password;
         this.balance = balance;
-        this.type = type;
     }
 
     public String getAccNo() {
@@ -41,25 +36,22 @@ public class BankAccount {
         return accountHolderName;
     }
 
-    public void setAccountHolderName(String accountHolderName) {
-        this.accountHolderName = accountHolderName;
-    }
+//    public void setAccountHolderName(String accountHolderName) {
+//        this.accountHolderName = accountHolderName;
+//    }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+//    public void setPassword(String password) {
+//        this.password = password;
+//    }
 
     public double getBalance() {
         return balance;
     }
 
-    public AccountType getType() {
-        return type;
-    }
 
     public void credit(double amount) {
         if (amount <= 0) {

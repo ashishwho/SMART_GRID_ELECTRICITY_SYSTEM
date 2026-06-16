@@ -26,7 +26,7 @@ public class AuthController {
 
     // POST /api/auth/customer/login
     @PostMapping("/customer/login")
-    public ResponseEntity<?> customerLogin(@RequestBody Map<String, String> body) {
+    public ResponseEntity<Customer> customerLogin(@RequestBody Map<String, String> body) {
         String meterNo = body.get("meterNo");
         String password = body.get("password");
         Customer customer = authService.customerLogin(meterNo, password);
@@ -35,7 +35,7 @@ public class AuthController {
 
     // POST /api/auth/employee/login
     @PostMapping("/employee/login")
-    public ResponseEntity<?> employeeLogin(@RequestBody Map<String, String> body) {
+    public ResponseEntity<Employee> employeeLogin(@RequestBody Map<String, String> body) {
         String employeeId = body.get("employeeId");
         String password = body.get("password");
         Employee employee = authService.employeeLogin(employeeId, password);

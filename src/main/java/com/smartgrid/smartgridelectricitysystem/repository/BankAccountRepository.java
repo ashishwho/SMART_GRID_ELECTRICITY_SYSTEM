@@ -1,6 +1,5 @@
 package com.smartgrid.smartgridelectricitysystem.repository;
 
-import com.smartgrid.smartgridelectricitysystem.model.AccountType;
 import com.smartgrid.smartgridelectricitysystem.model.BankAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 
