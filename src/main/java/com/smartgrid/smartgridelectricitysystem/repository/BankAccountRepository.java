@@ -8,8 +8,6 @@ import java.util.Optional;
 public interface BankAccountRepository extends JpaRepository<BankAccount, String> {
     Optional<BankAccount> findByAccNoAndPassword(String accNo, String password);
 
-    Optional<BankAccount> findByType(
-            AccountType type);
 }
 
 
