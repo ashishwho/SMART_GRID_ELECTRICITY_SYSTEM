@@ -39,7 +39,14 @@ public class CustomerService {
     }
 
     public Customer getCustomerByMeterNo(String meterNo) {
-        sessionService.requireEmployee();
+
+        if("EMPLOYEE".equals(sessionService.getRole())){
+            //emp can access any customer's data
+        }
+        else{
+            sessionService.requireCustomer(meterNo);
+        }
+
         return customerRepository.findById(meterNo)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Customer not found: " + meterNo));

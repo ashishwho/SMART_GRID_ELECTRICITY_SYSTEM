@@ -24,6 +24,11 @@ public class AuthController {
         this.sessionService = sessionService;
     }
 
+    @RequestMapping("/")
+    public String greet(){
+        return "Welcome to Gujarat state Electricity board. You can login as Customer or Employee";
+    }
+
     // POST /api/auth/customer/login
     @PostMapping("/customer/login")
     public ResponseEntity<Customer> customerLogin(@RequestBody Map<String, String> body) {

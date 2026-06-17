@@ -34,6 +34,7 @@ public class EnergyService {
     public EnergyRecord addEnergyRecord(String meterNo, EnergySource source, double unitsProduced, double ratePerUnit) {
 
         sessionService.requireEmployee();
+
         Customer customer = customerRepository.findById(meterNo)
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
