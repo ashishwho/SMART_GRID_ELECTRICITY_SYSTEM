@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.smartgrid.smartgridelectricitysystem.repository.WalletRepository;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 @Service
@@ -43,7 +44,8 @@ public class BillService {
     @Transactional
     public Bill createBill(
             String meterNo,
-            LocalDate billDate,
+            int year,
+            int month,
             double totalAmount) {
 
         sessionService.requireEmployee();
@@ -60,31 +62,25 @@ public class BillService {
                                         "Customer not found: "
                                                 + meterNo));
 
-        boolean alreadyExists =
-                billRepository
-                        .findByCustomerMeterNo(meterNo)
-                        .stream()
-                        .anyMatch(bill ->
+        YearMonth requested =
+                YearMonth.of(year, month);
 
-                                bill.getBillDate()
-                                        .getMonth() ==
-                                        billDate.getMonth()
+        if (!requested.isBefore(YearMonth.now())) {
+            throw new ValidationException(
+                    "Bills can only be created for past months");
+        }
 
-                                        &&
+        LocalDate billDate =
+                requested.atEndOfMonth();
 
-                                        bill.getBillDate()
-                                                .getYear() ==
-                                                billDate.getYear()
-                        );
+        boolean billExists =
+                billRepository.findByCustomerMeterNo(meterNo).stream().anyMatch(
+                        b->YearMonth.from(
+                                b.getBillDate())
+                                .equals(requested));
 
-        if (alreadyExists) {
-            throw new DuplicateResourceException(
-                    "Bill already exists for "
-                            + meterNo
-                            + " for "
-                            + billDate.getMonth()
-                            + " "
-                            + billDate.getYear());
+        if(billExists){
+            throw new ResourceNotFoundException("Bill already exits for customer "+meterNo + " for month "+ month+ " year "+ year);
         }
 
         Bill bill = new Bill(

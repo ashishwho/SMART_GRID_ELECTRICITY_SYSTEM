@@ -26,16 +26,27 @@ public class BillController {
     public ResponseEntity<Bill> createBill(
             @RequestBody Map<String, String> body) {
 
-        String meterNo = body.get("meterNo");
+        String meterNo =
+                body.get("meterNo");
 
-        LocalDate billDate;
+        int year;
 
         try {
-            billDate = LocalDate.parse(
-                    body.get("billDate"));
-        } catch (Exception e) {
+            year = Integer.parseInt(
+                    body.get("year"));
+        } catch (NumberFormatException e) {
             throw new ValidationException(
-                    "Invalid bill date. Use format YYYY-MM-DD");
+                    "Year must be a valid number");
+        }
+
+        int month;
+
+        try {
+            month = Integer.parseInt(
+                    body.get("month"));
+        } catch (NumberFormatException e) {
+            throw new ValidationException(
+                    "Month must be a valid number");
         }
 
         double totalAmount;
@@ -51,7 +62,8 @@ public class BillController {
         Bill bill =
                 billService.createBill(
                         meterNo,
-                        billDate,
+                        year,
+                        month,
                         totalAmount
                 );
 
