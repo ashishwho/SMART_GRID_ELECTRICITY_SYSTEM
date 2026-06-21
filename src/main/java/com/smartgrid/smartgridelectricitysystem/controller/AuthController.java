@@ -47,6 +47,18 @@ public class AuthController {
         return ResponseEntity.ok(employee);
     }
 
+    // POST /api/auth/logout
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(){
+        authService.logout();
+        return ResponseEntity.ok(
+                Map.of(
+                        "Success",true,
+                        "message", "logged out successfully"
+                )
+        );
+    }
+
    // POST /api/auth/session
    @GetMapping("/session")
    public ResponseEntity<?> currentSession() {

@@ -29,9 +29,8 @@ public class AuthService {
 
         Customer customer =
                 customerRepository.findById(meterNo)
-                        .filter(c ->
-                                c.getPassword()
-                                        .equals(password))
+                        .filter(c->c.getPassword().equals(password))
+
                         .orElseThrow(() ->
                                 new InvalidCredentialsException(
                                         "Invalid meter number or password"));
@@ -59,5 +58,11 @@ public class AuthService {
                 employee.getEmployeeId());
 
         return employee;
+    }
+
+    public void logout() {
+        sessionService.setRole(null);
+        sessionService.setMeterNo(null);
+        sessionService.setEmployeeId(null);
     }
 }

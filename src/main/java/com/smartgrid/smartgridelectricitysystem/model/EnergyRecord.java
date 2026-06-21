@@ -11,10 +11,6 @@ public class EnergyRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "source_type", nullable = false)
-    private EnergySource sourceType;
-
     @Column(name = "units_produced", nullable = false)
     private double unitsProduced;
 
@@ -35,7 +31,6 @@ public class EnergyRecord {
     }
 
     public EnergyRecord(
-            EnergySource sourceType,
             double unitsProduced,
             double ratePerUnit,
             LocalDate recordDate,
@@ -61,7 +56,6 @@ public class EnergyRecord {
                     "Customer cannot be null");
         }
 
-        this.sourceType = sourceType;
         this.unitsProduced = unitsProduced;
         this.ratePerUnit = ratePerUnit;
 
@@ -74,10 +68,6 @@ public class EnergyRecord {
 
     public Long getId() {
         return id;
-    }
-
-    public EnergySource getSourceType() {
-        return sourceType;
     }
 
     public double getUnitsProduced() {

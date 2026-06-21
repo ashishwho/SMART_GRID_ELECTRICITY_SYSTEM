@@ -36,6 +36,18 @@ public class SessionService {
         return employeeId;
     }
 
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setMeterNo(String meterNo) {
+        this.meterNo = meterNo;
+    }
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
+
     public void requireCustomer() {
 
         if (!"CUSTOMER".equals(role)) {

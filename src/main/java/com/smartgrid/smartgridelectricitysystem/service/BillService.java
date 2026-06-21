@@ -80,7 +80,7 @@ public class BillService {
                                 .equals(requested));
 
         if(billExists){
-            throw new ResourceNotFoundException("Bill already exits for customer "+meterNo + " for month "+ month+ " year "+ year);
+            throw new DuplicateResourceException("Bill already exits for customer "+meterNo + " for month "+ month+ " year "+ year);
         }
 
         Bill bill = new Bill(
@@ -224,7 +224,7 @@ public class BillService {
                                 meterNo,
                                 BillStatus.PENDING);
 
-        if (remainingPending == 0) {
+        if (remainingPending == 0 && !customer.isConnectionStatus()) {
             customer.setConnectionStatus(true);
             customerRepository.save(customer);
         }

@@ -31,14 +31,7 @@ public class EnergyController {
 
         String meterNo = body.get("meterNo");
 
-        EnergySource source;
-        try {
-            source = EnergySource.valueOf(
-                    body.get("sourceType").toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new ValidationException(
-                    "Invalid energy source");
-        }
+        String source = body.get("sourceType");
 
         double units;
         try {
@@ -58,10 +51,31 @@ public class EnergyController {
                     "Rate per unit must be a valid number");
         }
 
+        int year;
+
+        try {
+            year = Integer.parseInt(
+                    body.get("year"));
+        } catch (NumberFormatException e) {
+            throw new ValidationException(
+                    "Year must be a valid number");
+        }
+
+        int month;
+
+        try {
+            month = Integer.parseInt(
+                    body.get("month"));
+        } catch (NumberFormatException e) {
+            throw new ValidationException(
+                    "Month must be a valid number");
+        }
+
         EnergyRecord saved =
                 energyService.addEnergyRecord(
                         meterNo,
-                        source,
+                        year,
+                        month,
                         units,
                         rate);
 
