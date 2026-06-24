@@ -28,7 +28,12 @@ public class WalletService {
     }
 
     public Wallet getWalletByMeterNo(String meterNo) {
-        sessionService.requireCustomer(meterNo);
+        if("EMPLOYEE".equals(sessionService.getRole())){
+            //emp can access any customer's wallet
+        }
+        else{
+            sessionService.requireCustomer(meterNo);
+        }
         return walletRepository.findByMeterNo(meterNo)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Wallet not found for meter no: " + meterNo));
