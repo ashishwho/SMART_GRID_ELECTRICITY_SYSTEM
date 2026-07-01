@@ -19,6 +19,12 @@ public class Bill {
     @Column(name = "bill_date", nullable = false)
     private LocalDate billDate;
 
+    @Column(name="rate_per_unit",nullable = false)
+    private double ratePerUnit;
+
+    @Column(name="units_produced",nullable = false)
+    private double unitsProduced;
+
     @Column(name = "total_amount", nullable = false)
     private double totalAmount;
 
@@ -36,7 +42,8 @@ public class Bill {
 
     public Bill(Customer customer,
                 LocalDate billDate,
-                double totalAmount) {
+                double ratePerUnit,
+                double unitsProduced) {
 
         if (customer == null) {
             throw new IllegalArgumentException(
@@ -48,15 +55,22 @@ public class Bill {
                     "Bill date cannot be null");
         }
 
-        if (totalAmount <= 0) {
+        if (ratePerUnit <= 0) {
             throw new IllegalArgumentException(
-                    "Total amount must be positive");
+                    "ratePerUnit must be positive");
         }
+        if (unitsProduced <= 0) {
+            throw new IllegalArgumentException(
+                    "unitsProduced must be positive");
+        }
+
+
 
         this.customer = customer;
         this.billDate = billDate;
-        this.totalAmount = totalAmount;
-
+        this.ratePerUnit =ratePerUnit ;
+        this.unitsProduced = unitsProduced;
+        this.totalAmount = ratePerUnit*unitsProduced;
         this.status = BillStatus.PENDING;
         this.paidFromWallet = 0.0;
         this.paidFromBank = 0.0;
@@ -72,6 +86,14 @@ public class Bill {
 
     public LocalDate getBillDate() {
         return billDate;
+    }
+
+    public double getRatePerUnit() {
+        return ratePerUnit;
+    }
+
+    public double getUnitsProduced() {
+        return unitsProduced;
     }
 
     public double getTotalAmount() {

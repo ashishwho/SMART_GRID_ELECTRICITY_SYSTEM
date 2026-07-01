@@ -46,13 +46,18 @@ public class BillService {
             String meterNo,
             int year,
             int month,
-            double totalAmount) {
+            double ratePerUnit, double unitsProduced) {
 
         sessionService.requireEmployee();
 
-        if (totalAmount <= 0) {
+        if (ratePerUnit <= 0) {
             throw new ValidationException(
-                    "Bill amount must be positive");
+                    "rate of unit must be positive");
+        }
+        if(unitsProduced <= 0) {
+            throw new ValidationException(
+                    "number of units must be positive"
+            );
         }
 
         Customer customer =
@@ -86,7 +91,8 @@ public class BillService {
         Bill bill = new Bill(
                 customer,
                 billDate,
-                totalAmount
+                ratePerUnit,
+                unitsProduced
         );
 
         return billRepository.save(bill);

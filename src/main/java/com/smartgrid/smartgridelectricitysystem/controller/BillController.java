@@ -48,22 +48,30 @@ public class BillController {
                     "Month must be a valid number");
         }
 
-        double totalAmount;
-
-        try {
-            totalAmount = Double.parseDouble(
-                    body.get("totalAmount"));
-        } catch (NumberFormatException e) {
-            throw new ValidationException(
-                    "Total amount must be a valid number");
+        double units;
+        try{
+            units=Double.parseDouble(body.get("units"));
         }
+        catch (NumberFormatException e){
+            throw new ValidationException("units must be a valid number");
+        }
+
+        double rate;
+        try{
+            rate=Double.parseDouble(body.get("rate"));
+        }
+        catch (NumberFormatException e){
+            throw new ValidationException("rate must be a valid number");
+        }
+
 
         Bill bill =
                 billService.createBill(
                         meterNo,
                         year,
                         month,
-                        totalAmount
+                        rate,
+                        units
                 );
 
         return ResponseEntity.ok(bill);
