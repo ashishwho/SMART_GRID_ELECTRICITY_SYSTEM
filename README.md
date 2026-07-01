@@ -133,3 +133,8 @@ mvn spring-boot:run
 * JWT-based authentication
 * Front-End implementation
 
+## Author
+Ashish Kumar
+## E-mail
+202403002@dau.ac.in
+

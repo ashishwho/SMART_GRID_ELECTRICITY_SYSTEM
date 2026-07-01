@@ -18,6 +18,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     public CustomerController(CustomerService customerService) {
+
         this.customerService = customerService;
     }
 
@@ -96,6 +97,16 @@ public class CustomerController {
                         "Pending bill older than 3 months"
                 )
         );
+    }
+
+    @PutMapping("/{meterNo}/toggle-hasSolarPanel")
+    public ResponseEntity<Map<String,Object>>
+    toggleHasSolarPanel(@PathVariable String meterNo) {
+        boolean newStatus=customerService.toggleHasSolarPanel(meterNo);
+        return ResponseEntity.ok(Map.of(
+                "meterNo", meterNo,
+               "hasSolarPanel", newStatus
+        ));
     }
 
 

@@ -156,4 +156,12 @@ public class CustomerService {
     }
 
 
+    public boolean toggleHasSolarPanel(String meterNo) {
+        sessionService.requireEmployee();
+        Customer customer = getCustomerByMeterNo(meterNo);
+        boolean newStatus = !customer.isHasSolarPanel();
+        customer.setHasSolarPanel(newStatus);
+        customerRepository.save(customer);
+        return newStatus;
+    }
 }

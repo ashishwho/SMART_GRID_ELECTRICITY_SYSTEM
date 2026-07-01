@@ -5,7 +5,6 @@ import com.smartgrid.smartgridelectricitysystem.model.*;
 import com.smartgrid.smartgridelectricitysystem.repository.BankAccountRepository;
 import com.smartgrid.smartgridelectricitysystem.repository.CustomerRepository;
 import com.smartgrid.smartgridelectricitysystem.repository.UtilityAccountRepository;
-import com.smartgrid.smartgridelectricitysystem.repository.WalletRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

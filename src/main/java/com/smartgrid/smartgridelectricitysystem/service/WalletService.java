@@ -5,7 +5,6 @@ import com.smartgrid.smartgridelectricitysystem.exception.ResourceNotFoundExcept
 import com.smartgrid.smartgridelectricitysystem.exception.ValidationException;
 import com.smartgrid.smartgridelectricitysystem.model.Customer;
 import com.smartgrid.smartgridelectricitysystem.model.Wallet;
-import com.smartgrid.smartgridelectricitysystem.repository.CustomerRepository;
 import com.smartgrid.smartgridelectricitysystem.repository.WalletRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

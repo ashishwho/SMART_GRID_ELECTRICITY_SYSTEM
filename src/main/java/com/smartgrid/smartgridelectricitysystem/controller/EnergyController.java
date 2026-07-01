@@ -31,7 +31,7 @@ public class EnergyController {
 
         String meterNo = body.get("meterNo");
 
-        String source = body.get("sourceType");
+        //String source = body.get("sourceType");
 
         double units;
         try {

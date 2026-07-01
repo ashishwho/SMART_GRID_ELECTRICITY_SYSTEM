@@ -8,7 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SmartGridElectricitySystemApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SmartGridElectricitySystemApplication.class, args);
+
+		SpringApplication.run(SmartGridElectricitySystemApplication.class, args);//creates ioc container
 	}
 
 }
