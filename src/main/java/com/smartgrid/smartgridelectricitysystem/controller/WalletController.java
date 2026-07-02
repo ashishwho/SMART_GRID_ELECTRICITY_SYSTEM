@@ -31,7 +31,7 @@ public class WalletController {
 
     // POST /api/wallet/convert
     @PostMapping("/convert")
-    public ResponseEntity<?> convertToBank(@RequestBody Map<String, String> body) {
+    public ResponseEntity<Map<String,Object>> convertToBank(@RequestBody Map<String, String> body) {
         String meterNo = body.get("meterNo");
         double amount;
 

@@ -10,6 +10,7 @@ import com.smartgrid.smartgridelectricitysystem.repository.EnergyRecordRepositor
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 
@@ -86,9 +87,16 @@ public class EnergyService {
         return savedRecord;
     }
 
-    public List<EnergyRecord> getAllEnergyRecords() {
+    public List<EnergyRecord> searchEnergyRecords(int fromMonth, int fromYear, int toMonth, int toYear) {
         sessionService.requireEmployee();
-        return energyRecordRepository.findAll();
+        if(fromYear>toYear||(fromYear==toYear&&fromMonth>toMonth)){
+            throw new ValidationException("starting date must be less than ending date");
+        }
+        LocalDate startDate=YearMonth.of(fromYear,fromMonth).atEndOfMonth();
+
+        LocalDate endDate = YearMonth.of(toYear, toMonth).atEndOfMonth();
+
+        return energyRecordRepository.findByRecordDateBetween(startDate,endDate);
     }
 
     public List<EnergyRecord> getEnergyByCustomer(String meterNo) {

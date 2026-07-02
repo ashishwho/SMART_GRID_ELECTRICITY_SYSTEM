@@ -76,7 +76,7 @@ public class CustomerController {
     }
 
     // PUT /api/customers/{meterNo}/toggle-connection
-    @PutMapping("/{meterNo}/toggle-connection")
+    @PutMapping("/{meterNo}/toggleConnection")
     public ResponseEntity<Map<String,Object>> toggleConnection(@PathVariable String meterNo) {
         boolean newStatus = customerService.toggleConnection(meterNo);
         return ResponseEntity.ok(Map.of(
@@ -85,8 +85,8 @@ public class CustomerController {
         ));
     }
 
-    // PUT /api/customers/cut-connections/{month}
-    @PutMapping("/cut-overdue-connections")
+    // PUT /api/customers/cutOverdueConnections
+    @PutMapping("/cutOverdueConnections")
     public ResponseEntity<Map<String, Object>>
     cutOverdueConnections() {
 
@@ -101,7 +101,7 @@ public class CustomerController {
         );
     }
 
-    @PutMapping("/{meterNo}/toggle-hasSolarPanel")
+    @PutMapping("/{meterNo}/toggleHasSolarPanel")
     public ResponseEntity<Map<String,Object>>
     toggleHasSolarPanel(@PathVariable String meterNo) {
         boolean newStatus=customerService.toggleHasSolarPanel(meterNo);

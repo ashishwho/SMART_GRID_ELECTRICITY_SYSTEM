@@ -59,6 +59,10 @@ public class BillService {
                     "number of units must be positive"
             );
         }
+        if(month < 1 || month > 12) {
+            throw new ValidationException("month must be between 1 and 12");
+
+        }
 
         Customer customer =
                 customerRepository.findById(meterNo)
@@ -258,23 +262,8 @@ public class BillService {
                     "To month must be between 1 and 12");
         }
 
-        LocalDate startDate =
-                LocalDate.of(
-                        fromYear,
-                        fromMonth,
-                        1);
-
-        LocalDate endDate =
-                LocalDate.of(
-                                toYear,
-                                toMonth,
-                                1)
-                        .withDayOfMonth(
-                                LocalDate.of(
-                                                toYear,
-                                                toMonth,
-                                                1)
-                                        .lengthOfMonth());
+        LocalDate startDate=YearMonth.of(fromYear,fromMonth).atEndOfMonth();
+        LocalDate endDate = YearMonth.of(toYear, toMonth).atEndOfMonth();
 
         if (startDate.isAfter(endDate)) {
             throw new ValidationException(

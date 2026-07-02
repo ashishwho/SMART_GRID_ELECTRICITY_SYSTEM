@@ -17,12 +17,10 @@ import java.util.Map;
 public class EnergyController {
 
     private final EnergyService energyService;
-    private final CustomerRepository customerRepository;
 
     public EnergyController(EnergyService energyService,
                             CustomerRepository customerRepository) {
         this.energyService = energyService;
-        this.customerRepository = customerRepository;
     }
 
     // POST /api/energy/add
@@ -85,10 +83,23 @@ public class EnergyController {
         return ResponseEntity.ok(Response);
     }
 
-    // GET /api/energy
-    @GetMapping
-    public ResponseEntity<List<EnergyRecord>> getAllEnergyRecords() {
-        return ResponseEntity.ok(energyService.getAllEnergyRecords());
+    // GET /api/energy/search?fromYear=20XX&fromMonth=XX&toYear=20XX&toMonth=XX
+    @GetMapping("/search")
+    public ResponseEntity<List<EnergyRecord>> searchBills(
+            @RequestParam int fromYear,
+            @RequestParam int fromMonth,
+            @RequestParam int toYear,
+            @RequestParam int toMonth) {
+
+
+        return ResponseEntity.ok(
+                energyService.searchEnergyRecords(
+                        fromMonth,
+                        fromYear,
+                        toMonth,
+                        toYear
+                )
+        );
     }
 
     // GET /api/energy/{meterNo}
