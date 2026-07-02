@@ -7,6 +7,7 @@ import com.smartgrid.smartgridelectricitysystem.service.CustomerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +37,7 @@ public class CustomerController {
 
     // POST /api/customers/add
     @PostMapping("/add")
-    public ResponseEntity<Customer> addCustomer(
+    public ResponseEntity<Map<String,Object>> addCustomer(
             @RequestBody Map<String, Object> body) {
 
         String meterNo = (String) body.get("meterNo");
@@ -68,8 +69,10 @@ public class CustomerController {
                         hasSolarPanel,
                         bankAccNo
                 );
-
-        return ResponseEntity.ok(saved);
+        Map<String,Object> Response = new HashMap<String,Object>();
+        Response.put("message", "Customer added successfully");
+        Response.put("Customer", saved);
+        return ResponseEntity.ok(Response);
     }
 
     // PUT /api/customers/{meterNo}/toggle-connection
@@ -93,8 +96,7 @@ public class CustomerController {
         return ResponseEntity.ok(
                 Map.of(
                         "connectionsCut", count,
-                        "rule",
-                        "Pending bill older than 3 months"
+                        "rule", "Pending bill older than 3 months"
                 )
         );
     }

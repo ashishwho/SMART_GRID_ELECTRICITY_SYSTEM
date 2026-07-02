@@ -1,9 +1,11 @@
 package com.smartgrid.smartgridelectricitysystem.controller;
 
+import com.smartgrid.smartgridelectricitysystem.model.UtilityAccount;
 import com.smartgrid.smartgridelectricitysystem.service.BankAccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -22,7 +24,7 @@ public class BankAccountController {
 
     // POST /api/bank-accounts/utility/add
     @PostMapping("/utility/add")
-    public ResponseEntity<?> addUtilityAccount(
+    public ResponseEntity<Map<String,Object>> addUtilityAccount(
             @RequestBody Map<String, String> body) {
 
         String bankAccNo =
@@ -31,12 +33,12 @@ public class BankAccountController {
         String utilityName =
                 body.get("utilityName");
 
-        return ResponseEntity.ok(
-                bankAccountService
-                        .addUtilityAccount(
-                                bankAccNo,
-                                utilityName
-                        )
-        );
+        UtilityAccount utilityAccount =  bankAccountService.addUtilityAccount(bankAccNo, utilityName);
+
+        Map<String,Object> Response = new HashMap<String,Object>();
+        Response.put("message", "utility account added successfully");
+        Response.put("utilityAccount", utilityAccount);
+
+        return ResponseEntity.ok(Response);
     }
 }

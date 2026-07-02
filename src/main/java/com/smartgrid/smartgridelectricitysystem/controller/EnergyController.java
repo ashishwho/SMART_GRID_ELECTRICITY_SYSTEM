@@ -7,6 +7,7 @@ import com.smartgrid.smartgridelectricitysystem.service.EnergyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,12 +27,11 @@ public class EnergyController {
 
     // POST /api/energy/add
     @PostMapping("/add")
-    public ResponseEntity<EnergyRecord> addEnergyRecord(
+    public ResponseEntity<Map<String,Object>> addEnergyRecord(
             @RequestBody Map<String, String> body) {
 
         String meterNo = body.get("meterNo");
 
-        //String source = body.get("sourceType");
 
         double units;
         try {
@@ -78,8 +78,11 @@ public class EnergyController {
                         month,
                         units,
                         rate);
+        Map<String,Object> Response = new HashMap<String,Object>();
+        Response.put("message", "Energy record added successfully");
+        Response.put("customer", saved);
 
-        return ResponseEntity.ok(saved);
+        return ResponseEntity.ok(Response);
     }
 
     // GET /api/energy

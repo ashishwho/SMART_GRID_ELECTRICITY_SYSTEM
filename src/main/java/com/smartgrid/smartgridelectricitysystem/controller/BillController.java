@@ -6,6 +6,7 @@ import com.smartgrid.smartgridelectricitysystem.service.BillService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ public class BillController {
 
     // POST /api/bills/create
     @PostMapping("/create")
-    public ResponseEntity<Bill> createBill(
+    public ResponseEntity<Map<String,Object>> createBill(
             @RequestBody Map<String, String> body) {
 
         String meterNo =
@@ -74,7 +75,11 @@ public class BillController {
                         units
                 );
 
-        return ResponseEntity.ok(bill);
+        Map<String,Object> Response = new HashMap<String,Object>();
+        Response.put("message", "Bill created successfully");
+        Response.put("bill", bill);
+
+        return ResponseEntity.ok(Response);
     }
 
     // POST /api/bills/pay
@@ -107,21 +112,17 @@ public class BillController {
         String bankPassword =
                 body.get("bankPassword");
 
-        boolean result =
+        Bill bill =
                 billService.payBill(
                         meterNo,
                         billId,
                         walletAmount,
                         bankPassword
                 );
-
-        return ResponseEntity.ok(
-                Map.of(
-                        "success", result,
-                        "message",
-                        "Bill paid successfully"
-                )
-        );
+        Map<String,Object> Response=new HashMap<String,Object>();
+        Response.put("message", "Bill payed successfully");
+        Response.put("bill", bill);
+        return ResponseEntity.ok(Response);
     }
 
     // GET /api/bills/pending/{meterNo}

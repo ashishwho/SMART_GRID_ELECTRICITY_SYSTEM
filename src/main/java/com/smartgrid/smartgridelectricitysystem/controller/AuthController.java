@@ -7,6 +7,7 @@ import com.smartgrid.smartgridelectricitysystem.service.SessionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -31,40 +32,49 @@ public class AuthController {
 
     // POST /api/auth/customer/login
     @PostMapping("/customer/login")
-    public ResponseEntity<Customer> customerLogin(@RequestBody Map<String, String> body) {
+    public ResponseEntity<Map<String,Object>> customerLogin(@RequestBody Map<String, String> body) {
         String meterNo = body.get("meterNo");
         String password = body.get("password");
+
         Customer customer = authService.customerLogin(meterNo, password);
-        return ResponseEntity.ok(customer);
+        Map<String,Object> Response =new HashMap<String,Object>();
+
+        Response.put("message","Customer login successful");
+        Response.put("customer",customer);
+        return ResponseEntity.ok(Response);
     }
 
     // POST /api/auth/employee/login
     @PostMapping("/employee/login")
-    public ResponseEntity<Employee> employeeLogin(@RequestBody Map<String, String> body) {
+    public ResponseEntity<Map<String,Object>> employeeLogin(@RequestBody Map<String, String> body) {
         String employeeId = body.get("employeeId");
         String password = body.get("password");
+
         Employee employee = authService.employeeLogin(employeeId, password);
-        return ResponseEntity.ok(employee);
+
+        Map<String,Object> Response =new HashMap<String,Object>();
+        Response.put("message","Employee login successful");
+        Response.put("employee",employee);
+        return ResponseEntity.ok(Response);
     }
 
     // POST /api/auth/logout
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(){
+    public ResponseEntity<Map<String,Object>> logout(){
+
         authService.logout();
+
         return ResponseEntity.ok(
-                Map.of(
-                        "Success",true,
-                        "message", "logged out successfully"
-                )
+                Map.of("message", "logged out successfully")
         );
     }
 
    // POST /api/auth/session
    @GetMapping("/session")
-   public ResponseEntity<?> currentSession() {
+   public ResponseEntity<Map<String,Object>> currentSession() {
 
        Map<String,Object> response =
-               new java.util.HashMap<>();
+               new HashMap<String,Object>();
 
        response.put(
                "role",

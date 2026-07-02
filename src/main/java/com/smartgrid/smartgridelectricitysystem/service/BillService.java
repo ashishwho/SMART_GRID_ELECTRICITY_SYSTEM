@@ -121,7 +121,7 @@ public class BillService {
 
 
     @Transactional
-    public boolean payBill(
+    public Bill payBill(
             String meterNo,
             Long billId,
             double walletAmount,
@@ -235,7 +235,7 @@ public class BillService {
             customerRepository.save(customer);
         }
 
-        return true;
+        return bill;
     }
 
     public List<Bill> searchBills(
