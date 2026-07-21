@@ -3,6 +3,7 @@ package com.smartgrid.smartgridelectricitysystem.repository;
 import com.smartgrid.smartgridelectricitysystem.model.Bill;
 import com.smartgrid.smartgridelectricitysystem.model.BillStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,7 +33,7 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
             BillStatus status);
 
     Optional<Bill> findByBillIdAndStatus(Long billId, BillStatus status);
-
+    
     List<Bill> findByStatusAndBillDateBetween(
             BillStatus status,
             LocalDate startDate,

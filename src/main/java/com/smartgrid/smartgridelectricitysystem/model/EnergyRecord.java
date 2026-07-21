@@ -1,6 +1,6 @@
 package com.smartgrid.smartgridelectricitysystem.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.*;   //object rel mapping and persistence of obj
 import java.time.LocalDate;
 
 @Entity
