@@ -4,6 +4,7 @@ import com.smartgrid.smartgridelectricitysystem.exception.ValidationException;
 import com.smartgrid.smartgridelectricitysystem.model.Customer;
 import com.smartgrid.smartgridelectricitysystem.model.CustomerType;
 import com.smartgrid.smartgridelectricitysystem.service.CustomerService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,7 +73,7 @@ public class CustomerController {
         Map<String,Object> Response = new HashMap<String,Object>();
         Response.put("message", "Customer added successfully");
         Response.put("Customer", saved);
-        return ResponseEntity.ok(Response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(Response);
     }
 
     // PUT /api/customers/{meterNo}/toggle-connection

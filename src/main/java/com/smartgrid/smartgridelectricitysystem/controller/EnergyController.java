@@ -4,6 +4,7 @@ import com.smartgrid.smartgridelectricitysystem.exception.ValidationException;
 import com.smartgrid.smartgridelectricitysystem.model.*;
 import com.smartgrid.smartgridelectricitysystem.repository.CustomerRepository;
 import com.smartgrid.smartgridelectricitysystem.service.EnergyService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -80,7 +81,7 @@ public class EnergyController {
         Response.put("message", "Energy record added successfully");
         Response.put("customer", saved);
 
-        return ResponseEntity.ok(Response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(Response);
     }
 
     // GET /api/energy/search?fromYear=20XX&fromMonth=XX&toYear=20XX&toMonth=XX

@@ -3,6 +3,7 @@ package com.smartgrid.smartgridelectricitysystem.controller;
 import com.smartgrid.smartgridelectricitysystem.exception.ValidationException;
 import com.smartgrid.smartgridelectricitysystem.model.*;
 import com.smartgrid.smartgridelectricitysystem.service.BillService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -79,8 +80,9 @@ public class BillController {
         Response.put("message", "Bill created successfully");
         Response.put("bill", bill);
 
-        return ResponseEntity.ok(Response);
-    }
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(Response);    }
 
     // POST /api/bills/pay
     @PostMapping("/pay")
