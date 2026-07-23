@@ -22,8 +22,8 @@ public class BillController {
         this.billService = billService;
     }
 
-    // POST /api/bills/create
-    @PostMapping("/create")
+    // POST /api/bills
+    @PostMapping
     public ResponseEntity<Map<String,Object>> createBill(
             @RequestBody Map<String, String> body) {
 
@@ -84,22 +84,12 @@ public class BillController {
                 .status(HttpStatus.CREATED)
                 .body(Response);    }
 
-    // POST /api/bills/pay
-    @PostMapping("/pay")
+    // POST /api/bills/{billId}/pay
+    @PostMapping("/{billId}/pay")
     public ResponseEntity<Map<String, Object>> payBill(
-            @RequestBody Map<String, String> body) {
+            @RequestBody Map<String, String> body, @PathVariable Long billId) {
 
         String meterNo = body.get("meterNo");
-
-        Long billId;
-
-        try {
-            billId = Long.parseLong(
-                    body.get("billId"));
-        } catch (NumberFormatException e) {
-            throw new ValidationException(
-                    "Invalid bill id");
-        }
 
         double walletAmount;
 
@@ -121,10 +111,10 @@ public class BillController {
                         walletAmount,
                         bankPassword
                 );
-        Map<String,Object> Response=new HashMap<String,Object>();
-        Response.put("message", "Bill payed successfully");
-        Response.put("bill", bill);
-        return ResponseEntity.ok(Response);
+        Map<String,Object> response=new HashMap<String,Object>();
+        response.put("message", "Bill paid successfully");
+        response.put("bill", bill);
+        return ResponseEntity.ok(response);
     }
 
     // GET /api/bills/pending/{meterNo}
@@ -143,8 +133,8 @@ public class BillController {
     }
 
 
-    // GET /api/bills/search?fromYear=2026&fromMonth=1&toYear=2026&toMonth=6&status=PENDING
-    @GetMapping("/search")
+    // GET /api/bills?fromYear=2026&fromMonth=1&toYear=2026&toMonth=6&status=PENDING
+    @GetMapping
     public ResponseEntity<List<Bill>> searchBills(
             @RequestParam int fromYear,
             @RequestParam int fromMonth,

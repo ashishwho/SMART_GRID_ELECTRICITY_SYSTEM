@@ -24,8 +24,8 @@ public class EnergyController {
         this.energyService = energyService;
     }
 
-    // POST /api/energy/add
-    @PostMapping("/add")
+    // POST /api/energy
+    @PostMapping
     public ResponseEntity<Map<String,Object>> addEnergyRecord(
             @RequestBody Map<String, String> body) {
 
@@ -84,8 +84,8 @@ public class EnergyController {
         return ResponseEntity.status(HttpStatus.CREATED).body(Response);
     }
 
-    // GET /api/energy/search?fromYear=20XX&fromMonth=XX&toYear=20XX&toMonth=XX
-    @GetMapping("/search")
+    // GET /api/energy?fromYear=20XX&fromMonth=XX&toYear=20XX&toMonth=XX
+    @GetMapping
     public ResponseEntity<List<EnergyRecord>> searchBills(
             @RequestParam int fromYear,
             @RequestParam int fromMonth,

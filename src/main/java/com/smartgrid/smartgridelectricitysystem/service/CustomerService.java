@@ -111,12 +111,11 @@ public class CustomerService {
     }
 
     @Transactional
-    public boolean toggleConnection(String meterNo) {
+    public boolean updateConnection(String meterNo,boolean newStatus) {
 
         sessionService.requireEmployee();
 
         Customer customer = getCustomerByMeterNo(meterNo);
-        boolean newStatus = !customer.isConnectionStatus();
         customer.setConnectionStatus(newStatus);
         customerRepository.save(customer);
         return newStatus;
@@ -156,10 +155,9 @@ public class CustomerService {
     }
 
 
-    public boolean toggleHasSolarPanel(String meterNo) {
+    public boolean updateHasSolarPanel(String meterNo,boolean newStatus) {
         sessionService.requireEmployee();
         Customer customer = getCustomerByMeterNo(meterNo);
-        boolean newStatus = !customer.isHasSolarPanel();
         customer.setHasSolarPanel(newStatus);
         customerRepository.save(customer);
         return newStatus;

@@ -36,8 +36,8 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.getCustomerByMeterNo(meterNo));
     }
 
-    // POST /api/customers/add
-    @PostMapping("/add")
+    // POST /api/customers
+    @PostMapping
     public ResponseEntity<Map<String,Object>> addCustomer(
             @RequestBody Map<String, Object> body) {
 
@@ -76,18 +76,19 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(Response);
     }
 
-    // PUT /api/customers/{meterNo}/toggle-connection
-    @PutMapping("/{meterNo}/toggleConnection")
-    public ResponseEntity<Map<String,Object>> toggleConnection(@PathVariable String meterNo) {
-        boolean newStatus = customerService.toggleConnection(meterNo);
+    // PATCH /api/customers/{meterNo}/connection
+    @PatchMapping("/{meterNo}/connection")
+    public ResponseEntity<Map<String,Object>> updateConnection(@RequestBody Map<String,Object> body, @PathVariable String meterNo) {
+        boolean newStatus = (boolean)body.get("connectionStatus");
+        customerService.updateConnection(meterNo,newStatus);
         return ResponseEntity.ok(Map.of(
                 "meterNo", meterNo,
                 "connectionStatus", newStatus
         ));
     }
 
-    // PUT /api/customers/cutOverdueConnections
-    @PutMapping("/cutOverdueConnections")
+    // POST /api/customers/cut-overdue-connections
+    @PostMapping("/cut-overdue-connections")
     public ResponseEntity<Map<String, Object>>
     cutOverdueConnections() {
 
@@ -102,10 +103,12 @@ public class CustomerController {
         );
     }
 
-    @PutMapping("/{meterNo}/toggleHasSolarPanel")
+    //PATCH /api/customers/{}/solar-panel
+    @PatchMapping("/{meterNo}/solar-panel")
     public ResponseEntity<Map<String,Object>>
-    toggleHasSolarPanel(@PathVariable String meterNo) {
-        boolean newStatus=customerService.toggleHasSolarPanel(meterNo);
+    updateHasSolarPanel(@RequestBody Map<String, Object> body, @PathVariable String meterNo) {
+        boolean newStatus=(boolean)body.get("hasSolarPanel");
+        customerService.updateHasSolarPanel(meterNo,newStatus);
         return ResponseEntity.ok(Map.of(
                 "meterNo", meterNo,
                "hasSolarPanel", newStatus

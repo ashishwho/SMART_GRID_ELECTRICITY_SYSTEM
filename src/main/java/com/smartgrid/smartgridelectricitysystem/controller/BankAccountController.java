@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/bank-accounts")
+@RequestMapping("/api/bankAccounts")
 @CrossOrigin(origins = "*")
 public class BankAccountController {
 
@@ -22,8 +22,8 @@ public class BankAccountController {
                 bankAccountService;
     }
 
-    // POST /api/bank-accounts/utility/add
-    @PostMapping("/utility/add")
+    // POST /api/bankAccounts/utility
+    @PostMapping("/utility")
     public ResponseEntity<Map<String,Object>> addUtilityAccount(
             @RequestBody Map<String, String> body) {
 

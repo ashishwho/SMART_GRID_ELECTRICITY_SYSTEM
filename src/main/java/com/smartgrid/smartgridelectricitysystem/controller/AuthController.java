@@ -58,8 +58,8 @@ public class AuthController {
         return ResponseEntity.ok(Response);
     }
 
-    // POST /api/auth/logout
-    @PostMapping("/logout")
+    // DELETE /api/auth/logout
+    @DeleteMapping("/logout")
     public ResponseEntity<Map<String,Object>> logout(){
 
         authService.logout();
@@ -69,7 +69,7 @@ public class AuthController {
         );
     }
 
-   // POST /api/auth/session
+   // GET /api/auth/session
    @GetMapping("/session")
    public ResponseEntity<Map<String,Object>> currentSession() {
 
