@@ -43,9 +43,8 @@ public class WalletController {
                     "Amount must be a valid number");
         }
 
-        String bankPassword = body.get("bankPassword");
         boolean result = bankAccountService.convertVirtualToBank(
-                meterNo, amount, bankPassword);
+                meterNo, amount);
         return ResponseEntity.ok(Map.of(
                 "success", result,
                 "message", "Virtual money converted to bank successfully"

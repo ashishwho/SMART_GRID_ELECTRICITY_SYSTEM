@@ -92,7 +92,7 @@ public class BankAccountService {
     // VIRTUAL → BANK CONVERSION
 
     @Transactional
-    public boolean convertVirtualToBank(String meterNo, double amount, String bankPassword) {
+    public boolean convertVirtualToBank(String meterNo, double amount) {
 
 
         sessionService.requireCustomer(meterNo);
@@ -124,10 +124,6 @@ public class BankAccountService {
         // 5. Get customer bank account
         BankAccount customerBank = getBankAccount(accNo);
 
-        // 6. Verify bank password
-        if (!customerBank.getPassword().equals(bankPassword)) {
-            throw new InvalidCredentialsException("Invalid bank account password");
-        }
 
         // 7. Get utility account and check balance
         BankAccount utility =
