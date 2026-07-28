@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/bankAccounts")
+@RequestMapping("/api/bankaccounts")
 @CrossOrigin(origins = "*")
 public class BankAccountController {
 

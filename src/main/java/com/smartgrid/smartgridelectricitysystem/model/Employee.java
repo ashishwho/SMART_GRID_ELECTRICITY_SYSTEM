@@ -1,7 +1,6 @@
 package com.smartgrid.smartgridelectricitysystem.model;
 
 import jakarta.persistence.*;
-
 @Entity
 @Table(name = "employees")
 public class Employee {

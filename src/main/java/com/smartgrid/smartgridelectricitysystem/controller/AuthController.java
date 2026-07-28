@@ -25,7 +25,7 @@ public class AuthController {
         this.sessionService = sessionService;
     }
 
-    @RequestMapping("/")
+    @RequestMapping
     public String greet(){
         return "Welcome to Gujarat state Electricity board. You can login as Customer or Employee";
     }
